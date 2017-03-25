@@ -16,13 +16,15 @@
         android:text="@string/Label"
         android:id="@+id/tv_Label"
         android:textAlignment="center"
-        android:textSize="15sp"/>
+        android:textColor="@color/colorLightRed"
+        android:textSize="20sp"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/colorLightRed"
         android:id="@+id/tv_foodType"
         android:text="Bird"
-        android:textSize="25sp"
+        android:textSize="30sp"
         />
     <!-- Take Pic progress -->
     <ProgressBar
@@ -36,7 +38,7 @@
     <ScrollView
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:id="@+id/email_login_form"
@@ -50,17 +52,17 @@
                 android:layout_height="wrap_content">
 
             </android.support.design.widget.TextInputLayout>
-
-            <Button
-                android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceSmall"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="400dp"
-                android:onClick="takePicture"
-                android:text="@string/action_take_pic"
-                android:textStyle="bold"
-                android:background="@color/colorwhite"/>
         </LinearLayout>
     </ScrollView>
+
+    <Button
+        android:id="@+id/email_sign_in_button"
+        style="?android:textAppearanceSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="400dp"
+        android:onClick="takePicture"
+        android:text="@string/action_take_pic"
+        android:textStyle="bold"
+        android:background="@color/colorwhite"/>
 </LinearLayout>
