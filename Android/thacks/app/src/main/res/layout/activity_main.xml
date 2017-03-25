@@ -8,12 +8,22 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="th.thacks.Main">
-    <Button
+    tools:context="th.thacks.Main"
+    android:background="@drawable/gradient">
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/TestButton"
-        android:id="@+id/test_button"/>
+        android:text="@string/Label"
+        android:id="@+id/tv_Label"
+        android:textAlignment="center"
+        android:textSize="15sp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_foodType"
+        android:text="Bird"
+        android:textSize="25sp"
+        />
     <!-- Take Pic progress -->
     <ProgressBar
         android:id="@+id/login_progress"
@@ -49,7 +59,8 @@
                 android:layout_marginTop="400dp"
                 android:onClick="takePicture"
                 android:text="@string/action_take_pic"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:background="@color/colorwhite"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

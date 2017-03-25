@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">THacks</string>
+    <string name="app_name">Things To Food</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -17,5 +17,5 @@
     <string name="action_take_pic">Take Picture</string>
     <string name="error_take_pic">Please enable the camera</string>
 
-    <string name="TestButton">Test Button</string>
+    <string name="Label">You Look like a</string>
 </resources>

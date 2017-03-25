@@ -3,6 +3,7 @@ package th.thacks;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
@@ -58,8 +59,8 @@ import java.net.UnknownHostException;
 /**
  * A login screen that offers login via email/password.
  */
-public class Main extends AppCompatActivity {
-    CatLoadingView mView = new CatLoadingView();
+public class Main extends Activity {
+//    CatLoadingView mView = new CatLoadingView();
     static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
@@ -68,13 +69,13 @@ public class Main extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Set up the login form.
 
-        Button button = (Button)findViewById(R.id.test_button);
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mView.show(getSupportFragmentManager(), "");
-            }
-        });
+//        Button button = (Button)findViewById(R.id.test_button);
+//        button.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mView.show(getSupportFragmentManager(), "");
+//            }
+//        });
     }
 
     /**
