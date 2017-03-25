@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.BitmapDrawable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -33,6 +34,7 @@ import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 import android.content.Intent;
@@ -46,9 +48,12 @@ import com.roger.catloadinglibrary.CatLoadingView;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.nio.charset.StandardCharsets;
 
-import static android.Manifest.permission.READ_CONTACTS;
 import java.lang.System;
+import java.net.Socket;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
 /**
  * A login screen that offers login via email/password.
@@ -109,6 +114,30 @@ public class Main extends AppCompatActivity {
             Log.d("Hello", palette.toString());
             this.getWindow().getDecorView().setBackgroundColor(palette.getVibrantColor(0));
         }
+    }
+
+    private void requestImage(final int[] colors) throws IOException
+    {
+        InetAddress SERVER_ADDR = null;
+        try {
+            SERVER_ADDR = InetAddress.getByAddress(new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 0});
+        } catch(UnknownHostException ignored) {}
+        final int SERVER_PORT = 9999;
+
+        if(colors.length != 6)
+            throw new IllegalArgumentException();
+        Socket socket = new Socket(SERVER_ADDR,SERVER_PORT);
+        StringBuilder sb = new StringBuilder();
+        sb.append("GET ");
+        for(int i : colors)
+        {
+            sb.append(Integer.toHexString(i & 0xfffffff));
+            sb.append(' ');
+        }
+        sb.append("\r\n");
+        socket.getOutputStream().write(sb.toString().getBytes());
+        Bitmap bm = BitmapFactory.decodeStream(socket.getInputStream());
+        this.getWindow().getDecorView().setBackground(new BitmapDrawable(bm));
     }
 }
 
