@@ -137,8 +137,7 @@ public class Main extends Activity {
         }
         sb.append("\n");
         socket.getOutputStream().write(sb.toString().getBytes());
-        Bitmap bm = BitmapFactory.decodeStream(socket.getInputStream());
-        this.getWindow().getDecorView().setBackground(new BitmapDrawable(bm));
+        
     }
 }
 
