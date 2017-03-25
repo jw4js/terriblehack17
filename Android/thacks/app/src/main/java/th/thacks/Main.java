@@ -40,6 +40,9 @@ import java.io.IOException;
 import android.support.v7.graphics.Palette;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
+import com.roger.catloadinglibrary.CatLoadingView;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
@@ -50,11 +53,21 @@ import java.lang.System;
  * A login screen that offers login via email/password.
  */
 public class Main extends AppCompatActivity {
+    CatLoadingView mView = new CatLoadingView();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Set up the login form.
+
+        Button button = (Button)findViewById(R.id.test_button);
+        button.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mView.show(getSupportFragmentManager(), "");
+            }
+        });
     }
 
     /**

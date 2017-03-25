@@ -16,4 +16,6 @@
 
     <string name="action_take_pic">Take Picture</string>
     <string name="error_take_pic">Please enable the camera</string>
+
+    <string name="TestButton">Test Button</string>
 </resources>
