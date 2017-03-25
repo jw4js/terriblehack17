@@ -6,6 +6,7 @@ import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -31,10 +32,12 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +65,7 @@ import java.net.UnknownHostException;
 public class Main extends Activity {
 //    CatLoadingView mView = new CatLoadingView();
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    ImageView iv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,13 +73,8 @@ public class Main extends Activity {
         setContentView(R.layout.activity_main);
         // Set up the login form.
 
-//        Button button = (Button)findViewById(R.id.test_button);
-//        button.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mView.show(getSupportFragmentManager(), "");
-//            }
-//        });
+        iv = (ImageView) findViewById(R.id.foodImage);
+
     }
 
     /**
@@ -93,10 +92,6 @@ public class Main extends Activity {
         try {
             image_file = File.createTempFile("img", null);
         } catch (IOException ignored) {}
-//        Intent picture_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//        picture_intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
-//        Uri image_uri = Uri.fromFile(image_file);
-//        picture_intent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
 
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -112,8 +107,16 @@ public class Main extends Activity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             //mImageView.setImageBitmap(imageBitmap);
             Palette palette = Palette.from(imageBitmap).generate();
-            Log.d("Hello", palette.toString());
+            //Log.d("Hello", palette.toString());
             this.getWindow().getDecorView().setBackgroundColor(palette.getVibrantColor(0));
+            List<Palette.Swatch> swatches = palette.getSwatches();
+            int [] list = new int[swatches.size()];
+            for(int i = 0; i < swatches.size(); i++){
+                list[i] = swatches.get(i).getRgb();
+            }
+            try {
+                requestImage(list);
+            } catch (IOException ignored){}
         }
     }
 
@@ -121,12 +124,10 @@ public class Main extends Activity {
     {
         InetAddress SERVER_ADDR = null;
         try {
-            SERVER_ADDR = InetAddress.getByAddress(new byte[]{(byte) 192, (byte) 168, (byte) 0, (byte) 0});
+            SERVER_ADDR = InetAddress.getByAddress(new byte[]{(byte) 10, (byte) 84, (byte) 66, (byte) 119});
         } catch(UnknownHostException ignored) {}
         final int SERVER_PORT = 9999;
 
-        if(colors.length != 6)
-            throw new IllegalArgumentException();
         Socket socket = new Socket(SERVER_ADDR,SERVER_PORT);
         StringBuilder sb = new StringBuilder();
         sb.append("GET ");
@@ -137,7 +138,18 @@ public class Main extends Activity {
         }
         sb.append("\n");
         socket.getOutputStream().write(sb.toString().getBytes());
-        
+        Log.d("Hello" , Integer.toString(colors.length));
+//        iv.setImageDrawable(LoadImageFromWebOperations(sb.toString()));
+    }
+
+    public static Drawable LoadImageFromWebOperations(String url) {
+        try {
+            InputStream is = (InputStream) new URL(url).getContent();
+            Drawable d = Drawable.createFromStream(is, "src name");
+            return d;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }
 
