@@ -13,4 +13,7 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+
+    <string name="action_take_pic">Take Picture</string>
+    <string name="error_take_pic">Please enable the camera</string>
 </resources>
