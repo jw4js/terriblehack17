@@ -15,21 +15,26 @@ def list_by_color(hex_color):
 
 def get_best_by_colors(colors):
 	s = list_by_color(colors[0])
-	for i in range(1,6):
+	o = s
+	for i in range(1,len(colors)):
 		s &= list_by_color(colors[i])
+		if len(s) == 0:
+			s = o
+			break;
+		o = s
 	return s.pop()
 
 
 class TCPHandler(socketserver.BaseRequestHandler):
     def handle(self):
         # connect to the client side
-        data = str(self.request.recv(25)).strip()
+        data = str(self.request.recv(1024)).strip()
         print("{} wrote: {}".format(self.client_address[0],data))
         colors = data.split(' ')[1:]
         self.request.sendall(get_best_by_colors(colors).encode("UTF_8"))
 
 def main():
-	HOST, PORT = "localhost", 9999
+	HOST, PORT = "10.84.66.119", 9999
 	with socketserver.TCPServer((HOST,PORT), TCPHandler) as server:
 		server.serve_forever()
 	return 0
