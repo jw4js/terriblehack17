@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -54,6 +55,7 @@ import java.lang.System;
  */
 public class Main extends AppCompatActivity {
     CatLoadingView mView = new CatLoadingView();
+    static final int REQUEST_IMAGE_CAPTURE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,38 +87,27 @@ public class Main extends AppCompatActivity {
         try {
             image_file = File.createTempFile("img", null);
         } catch (IOException ignored) {}
-        Intent picture_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        picture_intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
-        Uri image_uri = Uri.fromFile(image_file);
-        picture_intent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
-        startActivityForResult(picture_intent,0);
+//        Intent picture_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//        picture_intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY,1);
+//        Uri image_uri = Uri.fromFile(image_file);
+//        picture_intent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
+
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode,int resultCode,Intent data)
     {
-        switch(requestCode)
-        {
-            case 0:
-            {
-                if(resultCode == RESULT_OK)
-                {
-                    BitmapFactory.Options bitmap_options = new BitmapFactory.Options();
-                    bitmap_options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-                    Bitmap image = null;
-                    try {
-                        InputStream is = new FileInputStream(image_file);
-                        image = BitmapFactory.decodeStream(is,null,bitmap_options);
-                        System.out.println(image);
-                    } catch(FileNotFoundException e) {}
-                    Palette palette = Palette.from(image).generate();
-                    this.getWindow().getDecorView().setBackgroundColor(palette.getVibrantColor(0));
-                }
-                else
-                {
-                    throw new NullPointerException();
-                }
-            }
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            //mImageView.setImageBitmap(imageBitmap);
+            Palette palette = Palette.from(imageBitmap).generate();
+            Log.d("Hello", palette.toString());
+            this.getWindow().getDecorView().setBackgroundColor(palette.getVibrantColor(0));
         }
     }
 }
