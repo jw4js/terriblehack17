@@ -57,6 +57,7 @@ import java.nio.charset.StandardCharsets;
 import java.lang.System;
 import java.net.Socket;
 import java.net.InetAddress;
+import java.io.ByteArrayOutputStream;
 import java.net.UnknownHostException;
 
 /**
@@ -114,13 +115,11 @@ public class Main extends Activity {
             for(int i = 0; i < swatches.size(); i++){
                 list[i] = swatches.get(i).getRgb();
             }
-            try {
-                requestImage(list);
-            } catch (IOException ignored){}
+            new Thread(new ImageSetter(list,this)).start();
         }
     }
 
-    private void requestImage(final int[] colors) throws IOException
+    public void requestImage(final int[] colors) throws IOException
     {
         InetAddress SERVER_ADDR = null;
         try {
@@ -130,19 +129,20 @@ public class Main extends Activity {
 
         Socket socket = new Socket(SERVER_ADDR,SERVER_PORT);
         StringBuilder sb = new StringBuilder();
-        sb.append("GET ");
+        sb.append("GET");
         for(int i : colors)
         {
-            sb.append(Integer.toHexString(i & 0xfffffff));
             sb.append(' ');
+            sb.append(Integer.toHexString(i & 0xfffffff));
         }
         sb.append("\n");
         socket.getOutputStream().write(sb.toString().getBytes());
+        iv.setImageDrawable(loadImageFromWebOperations(new String(read(socket.getInputStream()))));
+        socket.close();
         Log.d("Hello" , Integer.toString(colors.length));
-//        iv.setImageDrawable(LoadImageFromWebOperations(sb.toString()));
     }
 
-    public static Drawable LoadImageFromWebOperations(String url) {
+    public static Drawable loadImageFromWebOperations(String url) {
         try {
             InputStream is = (InputStream) new URL(url).getContent();
             Drawable d = Drawable.createFromStream(is, "src name");
@@ -150,6 +150,18 @@ public class Main extends Activity {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    public static byte[] read(final InputStream i) throws IOException
+    {
+        final ByteArrayOutputStream o = new ByteArrayOutputStream();
+        final byte[] b = new byte[4096];
+        int l;
+        while((l = i.read(b,0,4096)) != -1)
+            if(l != 0)
+                o.write(b,0,l);
+        i.close();
+        return o.toByteArray();
     }
 }
 
