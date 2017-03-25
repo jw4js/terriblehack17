@@ -134,7 +134,7 @@ public class Main extends AppCompatActivity {
             sb.append(Integer.toHexString(i & 0xfffffff));
             sb.append(' ');
         }
-        sb.append("\r\n");
+        sb.append("\n");
         socket.getOutputStream().write(sb.toString().getBytes());
         Bitmap bm = BitmapFactory.decodeStream(socket.getInputStream());
         this.getWindow().getDecorView().setBackground(new BitmapDrawable(bm));
