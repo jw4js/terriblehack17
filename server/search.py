@@ -14,8 +14,9 @@ def list_by_color(hex_color):
 	return image_list
 
 def get_best_by_colors(colors):
-	s  = list_by_color(colors[0])
-	s &= list_by_color(colors[1])
+	s = list_by_color(colors[0])
+	for i in range(1,6):
+		s &= list_by_color(colors[i])
 	return s.pop()
 
 
@@ -24,7 +25,7 @@ class TCPHandler(socketserver.BaseRequestHandler):
         # connect to the client side
         data = str(self.request.recv(25)).strip()
         print("{} wrote: {}".format(self.client_address[0],data))
-        colors = data.split(' ')
+        colors = data.split(' ')[1:]
         self.request.sendall(get_best_by_colors(colors).encode("UTF_8"))
 
 def main():
