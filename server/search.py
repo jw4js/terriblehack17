@@ -8,7 +8,7 @@ import random
 API_KEY = "851491bcca225c2e3dde:7787437fafe08a29651ef8946b772839a08785dd"
 
 def list_by_color(hex_color):
-	raw = requests.get(url="https://" + API_KEY + "@api.shutterstock.com/v2/images/search?query=food&per_page=256&color=#" + hex_color + "&category=Food+and+Drink&safe=true").json()["data"]
+	raw = requests.get(url="https://" + API_KEY + "@api.shutterstock.com/v2/images/search?query=fruit&per_page=256&color=#" + hex_color + "&category=Food+and+Drink&safe=true").json()["data"]
 	image_list = set()
 	for i in raw:
 		image_list.add(i["assets"]["preview"]["url"])
@@ -19,7 +19,7 @@ def get_best_by_colors(colors):
 	o = s
 	for i in range(1,len(colors)):
 		s &= list_by_color(colors[i])
-		if len(s) < 40:
+		if len(s) < 16:
 			s = o
 			break
 		o = s
