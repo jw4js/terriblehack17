@@ -9,6 +9,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.TransitionDrawable;
+import android.media.Image;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -36,6 +37,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.io.FileNotFoundException;
@@ -78,7 +80,7 @@ public class Main extends Activity {
         // Set up the login form.
         iv = (ImageView) findViewById(R.id.foodImage);
 
-        LinearLayout linearLayout = (LinearLayout) findViewById(R.id.linearlayout);
+        RelativeLayout linearLayout = (RelativeLayout) findViewById(R.id.linearlayout);
         AnimationDrawable trans = (AnimationDrawable) linearLayout.getBackground();
         trans.start();
 
@@ -128,13 +130,17 @@ public class Main extends Activity {
 
     public void requestImage(final int[] colors) throws IOException
     {
+
+        Log.d("Hello" ,"World");
         InetAddress SERVER_ADDR = null;
         try {
             SERVER_ADDR = InetAddress.getByAddress(new byte[]{(byte) 10, (byte) 84, (byte) 66, (byte) 119});
         } catch(UnknownHostException ignored) {}
+        Log.d("Hello" ,"World1");
         final int SERVER_PORT = 9999;
 
         Socket socket = new Socket(SERVER_ADDR,SERVER_PORT);
+        Log.d("Hello" ,"World2");
         StringBuilder sb = new StringBuilder();
         sb.append("GET");
         for(int i : colors)
@@ -142,11 +148,40 @@ public class Main extends Activity {
             sb.append(' ');
             sb.append(Integer.toHexString(i & 0xfffffff));
         }
+        Log.d("Hello" ,"World3");
         sb.append("\n");
+        InputStream socket_is = socket.getInputStream();
         socket.getOutputStream().write(sb.toString().getBytes());
-        iv.setImageDrawable(loadImageFromWebOperations(new String(read(socket.getInputStream()))));
+        String s = new String(read(socket_is));
+        Log.d("Hello" , s);
+        ImageThread it = new ImageThread(s);
+
         socket.close();
-        Log.d("Hello" , Integer.toString(colors.length));
+        it.execute(s);
+    }
+
+    public class ImageThread extends AsyncTask<String, Void, Drawable> {
+        String world;
+        Drawable ivv;
+        public ImageThread(String hello) {
+            super();
+            world = hello;
+        }
+
+        @Override
+        protected Drawable doInBackground(String... voids) {
+            ivv = loadImageFromWebOperations(voids[0]);
+            Log.d("Pokemon", world);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Drawable aVoid) {
+            super.onPostExecute(aVoid);
+            iv.setBackground(ivv);
+
+
+        }
     }
 
     public static Drawable loadImageFromWebOperations(String url) {
@@ -156,6 +191,7 @@ public class Main extends Activity {
             return d;
         } catch (Exception e) {
             return null;
+
         }
     }
 

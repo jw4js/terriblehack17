@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,23 +11,23 @@
     tools:context="th.thacks.Main"
     android:id="@+id/linearlayout"
     android:background="@drawable/transdrawable">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/Label"
-        android:id="@+id/tv_Label"
-        android:textAlignment="center"
-        android:textColor="@color/colorLightRed"
-        android:textSize="20sp"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/colorLightRed"
-        android:id="@+id/tv_foodType"
-        android:text="Bird"
-        android:textSize="30sp"
-        />
-    <!-- Take Pic progress -->
+    <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:text="@string/Label"-->
+        <!--android:id="@+id/tv_Label"-->
+        <!--android:textAlignment="center"-->
+        <!--android:textColor="@color/colorLightRed"-->
+        <!--android:textSize="20sp"/>-->
+    <!--<TextView-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:textColor="@color/colorLightRed"-->
+        <!--android:id="@+id/tv_foodType"-->
+        <!--android:text="Bird"-->
+        <!--android:textSize="30sp"-->
+        <!--/>-->
+    <!--&lt;!&ndash; Take Pic progress &ndash;&gt;-->
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -37,18 +37,17 @@
         android:visibility="gone" />
     <ImageView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/foodImage"
-        android:src="@mipmap/ic_launcher"/>
+        android:layout_height="match_parent"
+        android:id="@+id/foodImage"/>
 
     <Button
         android:id="@+id/email_sign_in_button"
         style="?android:textAppearanceSmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="400dp"
+        android:layout_alignParentBottom="true"
         android:onClick="takePicture"
         android:text="@string/action_take_pic"
         android:textStyle="bold"
         android:background="@color/colorwhite"/>
-</LinearLayout>
+</RelativeLayout>
