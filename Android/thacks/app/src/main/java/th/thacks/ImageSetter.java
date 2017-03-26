@@ -1,5 +1,7 @@
 package th.thacks;
 
+import android.util.Log;
+
 import java.io.IOException;
 
 /**
@@ -21,6 +23,11 @@ public class ImageSetter implements Runnable{
         try
         {
             parent.requestImage(colors);
-        } catch(IOException ignored) {}
+        } catch(IOException ignored) {
+            //Log.d("THIS IS STUPID", "WOW");
+
+            ignored.printStackTrace();
+
+        }
     }
 }
