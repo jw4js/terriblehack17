@@ -3,6 +3,7 @@ import requests
 import json
 import sys
 import socketserver
+import random
 
 API_KEY = "851491bcca225c2e3dde:7787437fafe08a29651ef8946b772839a08785dd"
 
@@ -18,20 +19,22 @@ def get_best_by_colors(colors):
 	o = s
 	for i in range(1,len(colors)):
 		s &= list_by_color(colors[i])
-		if len(s) == 0:
+		if len(s) < 40:
 			s = o
-			break;
+			break
 		o = s
-	return s.pop()
+	s = list(s)
+	return s[random.randint(0,len(s))]
 
 
 class TCPHandler(socketserver.BaseRequestHandler):
     def handle(self):
         # connect to the client side
         data = str(self.request.recv(1024)).strip()
-        print("{} wrote: {}".format(self.client_address[0],data))
         colors = data.split(' ')[1:]
-        self.request.sendall(get_best_by_colors(colors).encode("UTF_8"))
+        response = get_best_by_colors(colors).encode("UTF_8")
+        self.request.sendall(response)
+        print("{} rx {} tx {}".format(self.client_address[0],data,response))
 
 def main():
 	HOST, PORT = "10.84.66.119", 9999
